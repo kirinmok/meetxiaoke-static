@@ -10,9 +10,9 @@
   <style>
     :root { --ink:#2a2a2a; --soft:#888; --accent:#7a4ad6; --bg:#fafaf7; }
     body { font-family: -apple-system, "PingFang TC", "Noto Sans TC", sans-serif; max-width: 720px; margin: 0 auto; padding: 24px; color: var(--ink); background: var(--bg); line-height: 1.75; }
-    header { padding: 16px 0 32px; border-bottom: 1px solid #e5e5e0; margin-bottom: 32px; }
-    header a { font-size: 22px; font-weight: 600; color: var(--ink); text-decoration: none; }
-    header .tag { color: var(--soft); font-size: 14px; margin-left: 8px; }
+    header { padding: 24px 0 32px; border-bottom: 1px solid #e5e5e0; margin-bottom: 40px; text-align: center; }
+    header .site-title { display: block; font-size: 28px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.04em; margin-bottom: 12px; }
+    header .site-tag { display: block; color: var(--soft); font-size: 14px; letter-spacing: 0.03em; }
     article h1 { font-size: 28px; margin: 0 0 8px; }
     article time { color: var(--soft); font-size: 14px; }
     article img { max-width: 100%; height: auto; border-radius: 4px; margin: 16px 0; }
@@ -53,8 +53,8 @@
 </head>
 <body class="{% if page.url == '/' %}home{% endif %}">
   <header>
-    <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
-    <span class="tag">{{ site.description }}</span>
+    <a href="{{ '/' | relative_url }}" class="site-title">{{ site.title }}</a>
+    <span class="site-tag">{{ site.description }}</span>
   </header>
   <main>{{ content }}</main>
   <footer>© {{ site.time | date: "%Y" }} {{ site.author }} · <a href="{{ '/feed.xml' | relative_url }}">RSS</a></footer>
