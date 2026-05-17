@@ -22,6 +22,7 @@
     .hero-text h1 { margin: 0 0 4px; font-size: 32px; font-weight: 600; letter-spacing: 1px; }
     .hero-text p { margin: 0; font-size: 14px; opacity: .9; }
     @media (max-width: 600px) { .hero-text h1 { font-size: 24px; } .hero-text p { font-size: 12px; } }
+    .content .hashtag-line { margin-top: 48px; padding-top: 18px; border-top: 1px dashed #e5e5e0; color: var(--soft); font-size: 13px; letter-spacing: 0.02em; line-height: 1.8; }
     .post-nav { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; margin: 56px 0 24px; padding: 24px 0; border-top: 1px dashed #d0c8e0; font-size: 14px; }
     .post-nav a { text-decoration: none; color: var(--ink); padding: 10px 14px; border-radius: 8px; transition: all .2s; display: flex; flex-direction: column; line-height: 1.5; }
     .post-nav a:hover { background: rgba(122, 74, 214, 0.08); color: var(--accent); }
@@ -52,5 +53,15 @@
   </header>
   <main>{{ content }}</main>
   <footer>© {{ site.time | date: "%Y" }} {{ site.author }} · <a href="{{ '/feed.xml' | relative_url }}">RSS</a></footer>
+  <script>
+    // 內文 hashtag 行加分隔空白 + 灰色樣式
+    document.querySelectorAll('article .content p').forEach(p => {
+      const t = p.textContent.trim();
+      if (!t.startsWith('#')) return;
+      if (t.split(/\s+/).every(w => w.startsWith('#'))) {
+        p.classList.add('hashtag-line');
+      }
+    });
+  </script>
 </body>
 </html>
