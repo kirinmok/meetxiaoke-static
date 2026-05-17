@@ -7,3 +7,42 @@ layout: default
   {% if page.image %}<img src="{{ page.image | relative_url }}" alt="{{ page.title }}">{% endif %}
   <div class="content">{{ content }}</div>
 </article>
+
+{% assign sorted = site.posts | sort: 'day' %}
+{% for p in sorted %}
+  {% if p.day == page.day %}
+    {% assign current_idx = forloop.index0 %}
+  {% endif %}
+{% endfor %}
+
+<nav class="post-nav">
+  {% if current_idx > 0 %}
+    {% assign prev_idx = current_idx | minus: 1 %}
+    {% assign prev_post = sorted[prev_idx] %}
+    <a class="nav-prev" href="{{ prev_post.url | relative_url }}">
+      <span class="nav-arrow">←</span>
+      <span class="nav-label">上一篇</span>
+      <span class="nav-title">{{ prev_post.title }}</span>
+    </a>
+  {% else %}
+    <span class="nav-empty"></span>
+  {% endif %}
+
+  <a class="nav-home" href="{{ '/' | relative_url }}">
+    <span class="nav-arrow">↑</span>
+    <span>回首頁</span>
+  </a>
+
+  {% assign last_idx = sorted.size | minus: 1 %}
+  {% if current_idx < last_idx %}
+    {% assign next_idx = current_idx | plus: 1 %}
+    {% assign next_post = sorted[next_idx] %}
+    <a class="nav-next" href="{{ next_post.url | relative_url }}">
+      <span class="nav-label">下一篇</span>
+      <span class="nav-arrow">→</span>
+      <span class="nav-title">{{ next_post.title }}</span>
+    </a>
+  {% else %}
+    <span class="nav-empty"></span>
+  {% endif %}
+</nav>

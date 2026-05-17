@@ -22,6 +22,21 @@
     .hero-text h1 { margin: 0 0 4px; font-size: 32px; font-weight: 600; letter-spacing: 1px; }
     .hero-text p { margin: 0; font-size: 14px; opacity: .9; }
     @media (max-width: 600px) { .hero-text h1 { font-size: 24px; } .hero-text p { font-size: 12px; } }
+    .post-nav { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; margin: 56px 0 24px; padding: 24px 0; border-top: 1px dashed #d0c8e0; font-size: 14px; }
+    .post-nav a { text-decoration: none; color: var(--ink); padding: 10px 14px; border-radius: 8px; transition: all .2s; display: flex; flex-direction: column; line-height: 1.5; }
+    .post-nav a:hover { background: rgba(122, 74, 214, 0.08); color: var(--accent); }
+    .post-nav .nav-arrow { font-size: 18px; color: var(--accent); }
+    .post-nav .nav-label { color: var(--soft); font-size: 12px; letter-spacing: 0.05em; }
+    .post-nav .nav-title { font-weight: 500; margin-top: 2px; }
+    .post-nav .nav-prev { justify-self: start; text-align: left; }
+    .post-nav .nav-home { justify-self: center; align-items: center; text-align: center; font-weight: 500; color: var(--accent); border: 1px dashed #d0c8e0; }
+    .post-nav .nav-home:hover { border-color: var(--accent); }
+    .post-nav .nav-next { justify-self: end; text-align: right; align-items: flex-end; }
+    .post-nav .nav-empty { display: block; }
+    @media (max-width: 600px) {
+      .post-nav { grid-template-columns: 1fr; }
+      .post-nav .nav-prev, .post-nav .nav-next, .post-nav .nav-home { justify-self: stretch; text-align: center; align-items: center; }
+    }
     .post-list { list-style: none; padding: 0; }
     .post-list li { padding: 12px 0; border-bottom: 1px dashed #e5e5e0; }
     .post-list a { color: var(--ink); text-decoration: none; font-weight: 500; }
@@ -37,5 +52,34 @@
   </header>
   <main>{{ content }}</main>
   <footer>© {{ site.time | date: "%Y" }} {{ site.author }} · <a href="{{ '/feed.xml' | relative_url }}">RSS</a></footer>
+  <script>
+    // 內文「Day N」自動變超連結
+    (function() {
+      const dayMap = {
+        {% assign sorted = site.posts | sort: 'day' %}
+        {% for p in sorted %}{{ p.day }}: "{{ p.url | relative_url }}"{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      };
+      const content = document.querySelector('article .content');
+      if (!content) return;
+      const currentDay = {{ page.day | default: 0 }};
+      const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, null, false);
+      const nodes = [];
+      let n;
+      while (n = walker.nextNode()) nodes.push(n);
+      nodes.forEach(node => {
+        const text = node.nodeValue;
+        if (!/Day\s*\d+/.test(text)) return;
+        const span = document.createElement('span');
+        span.innerHTML = text.replace(/Day\s*(\d+)/g, (m, num) => {
+          const n = parseInt(num);
+          if (n === currentDay) return m;
+          if (dayMap[n]) return `<a href="${dayMap[n]}" style="color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent)">${m}</a>`;
+          return m;
+        });
+        node.parentNode.replaceChild(span, node);
+      });
+    })();
+  </script>
 </body>
 </html>
