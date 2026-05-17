@@ -10,6 +10,9 @@ permalink: /:slug/
 markdown: kramdown
 highlighter: rouge
 
+future: true
+unpublished: false
+
 theme: minima
 
 plugins:
