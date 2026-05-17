@@ -52,34 +52,5 @@
   </header>
   <main>{{ content }}</main>
   <footer>© {{ site.time | date: "%Y" }} {{ site.author }} · <a href="{{ '/feed.xml' | relative_url }}">RSS</a></footer>
-  <script>
-    // 內文「Day N」自動變超連結
-    (function() {
-      const dayMap = {
-        {% assign sorted = site.posts | sort: 'day' %}
-        {% for p in sorted %}{{ p.day }}: "{{ p.url | relative_url }}"{% unless forloop.last %},{% endunless %}
-        {% endfor %}
-      };
-      const content = document.querySelector('article .content');
-      if (!content) return;
-      const currentDay = {{ page.day | default: 0 }};
-      const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, null, false);
-      const nodes = [];
-      let n;
-      while (n = walker.nextNode()) nodes.push(n);
-      nodes.forEach(node => {
-        const text = node.nodeValue;
-        if (!/Day\s*\d+/.test(text)) return;
-        const span = document.createElement('span');
-        span.innerHTML = text.replace(/Day\s*(\d+)/g, (m, num) => {
-          const n = parseInt(num);
-          if (n === currentDay) return m;
-          if (dayMap[n]) return `<a href="${dayMap[n]}" style="color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent)">${m}</a>`;
-          return m;
-        });
-        node.parentNode.replaceChild(span, node);
-      });
-    })();
-  </script>
 </body>
 </html>
