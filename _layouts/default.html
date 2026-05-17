@@ -37,6 +37,12 @@
       .post-nav { grid-template-columns: 1fr; }
       .post-nav .nav-prev, .post-nav .nav-next, .post-nav .nav-home { justify-self: stretch; text-align: center; align-items: center; }
     }
+    .pager { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 24px 0; flex-wrap: wrap; }
+    .pager button { background: transparent; border: 1px solid #d0c8e0; color: var(--ink); width: 36px; height: 36px; border-radius: 6px; cursor: pointer; font-size: 14px; transition: all .15s; font-family: inherit; padding: 0; }
+    .pager button:hover:not(:disabled) { background: rgba(122, 74, 214, 0.08); border-color: var(--accent); color: var(--accent); }
+    .pager button.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500; }
+    .pager button:disabled { opacity: 0.3; cursor: not-allowed; }
+    .pager-bottom { margin: 12px 0 32px; }
     .post-list { list-style: none; padding: 0; }
     .post-list li { padding: 12px 0; border-bottom: 1px dashed #e5e5e0; }
     .post-list a { color: var(--ink); text-decoration: none; font-weight: 500; }
